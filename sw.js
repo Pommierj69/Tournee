@@ -1,7 +1,7 @@
 /* Tournée : service worker. Tout est mis en mémoire à la première ouverture, l'appli démarre ensuite sans réseau.
-   Une nouvelle version est reprise à l'ouverture suivante. Version : 993c7a3a65 */
-const CACHE = 'tournee-993c7a3a65';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
+   Une nouvelle version est reprise à l'ouverture suivante. Version : 448e3e2b42 */
+const CACHE = 'tournee-448e3e2b42';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES.map((f) => new Request(f, { cache: 'reload' })))).then(() => self.skipWaiting()));
