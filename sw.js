@@ -1,6 +1,6 @@
 /* Tournée : service worker. Tout est mis en mémoire à la première ouverture, l'appli démarre ensuite sans réseau.
-   Une nouvelle version est reprise à l'ouverture suivante. Version : v2.9-20261116 */
-const CACHE = 'tournee-v2.9-20261116';
+   Une nouvelle version est reprise à l'ouverture suivante. Version : v2.10-20261116 */
+const CACHE = 'tournee-v2.10-20261116';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', (e) => {

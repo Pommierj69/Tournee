@@ -736,6 +736,177 @@ input[type="date"]::-webkit-date-and-time-value,input[type="time"]::-webkit-date
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .seg button[data-done="1"][aria-pressed="true"]{background:var(--ok)}
 
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Tournée V2.10 — direction artistique « carnet de terrain »
+   Couche de présentation uniquement : aucune logique métier modifiée.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F4F2EB;
+  --surface:#FFFEFA;
+  --ink:#193B32;
+  --ink2:#52665E;
+  --ink3:#84928A;
+  --line:rgba(25,59,50,.10);
+  --line-strong:rgba(25,59,50,.22);
+  --gap:#C7654B;
+  --gap-bg:#F8E8E1;
+  --ok:#397A5A;
+  --ok-bg:#E2EEE4;
+  --nat:#F0C66A;
+  --nat-soft:#FAEBCB;
+  --cen:#B9C9BD;
+  --cen-soft:#E4EBE3;
+  --warn:#80521F;
+  --warn-bg:#F8EED8;
+  --focus:#2E7160;
+  --r-s:10px;
+  --r-m:18px;
+  --r-l:28px;
+  --nav-h:72px;
+}
+html{background:var(--ground);scroll-padding-top:24px}
+body{background:var(--ground);color:var(--ink);font-size:16px;line-height:1.48;letter-spacing:.002em}
+button{transition:transform .16s ease,background .16s ease,border-color .16s ease,box-shadow .16s ease,color .16s ease}
+.app{max-width:600px;padding:calc(var(--safe-t) + 22px) 18px calc(var(--nav-h) + var(--safe-b) + 116px)}
+body.no-nav .app{padding-bottom:calc(var(--safe-b) + 48px)}
+.top{margin-bottom:20px}
+.top-home{align-items:center;gap:14px}
+.home-brand{display:flex;align-items:center;gap:13px;min-width:0}
+.brand-symbol{width:54px;height:54px;display:grid;place-items:center;flex:none;border-radius:19px;background:var(--ink);color:#F7E7C4;box-shadow:0 8px 20px rgba(25,59,50,.15)}
+.brand-symbol svg.i{width:27px;height:27px;stroke-width:1.8}
+.date{font-size:13px;font-weight:700;letter-spacing:.075em;text-transform:uppercase;color:var(--ink3)}
+.title{font:700 42px/.96 var(--f-num);letter-spacing:.015em;color:var(--ink)}
+.home-sub{margin-top:3px;font-size:13px;color:var(--ink2);letter-spacing:.01em}
+.settings-trigger{width:46px;height:46px;display:grid;place-items:center;flex:none;border-radius:16px;background:var(--surface);border:1px solid var(--line);color:var(--ink);box-shadow:0 4px 12px rgba(25,59,50,.045)}
+.settings-trigger svg.i{width:21px;height:21px}
+.settings-trigger:active{transform:scale(.96);background:#F0EEE6}
+/* Dashboard */
+.dash{position:relative;overflow:hidden;margin:18px 0 24px;padding:19px;border:0;border-radius:26px;background:linear-gradient(145deg,#214B3E 0%,#173B32 72%,#16342D 100%);color:#fff;box-shadow:0 14px 30px rgba(25,59,50,.16)}
+.dash::before{content:"";position:absolute;width:190px;height:190px;right:-88px;top:-110px;border:1px solid rgba(245,230,195,.18);border-radius:50%;box-shadow:0 0 0 22px rgba(245,230,195,.035),0 0 0 48px rgba(245,230,195,.025);pointer-events:none}
+.dash-head{position:relative;z-index:1;align-items:flex-start;margin-bottom:17px}
+.dash-head>div{display:flex;flex-direction:column;gap:3px}
+.dash-head b{font-size:19px;line-height:1.2;font-weight:700;letter-spacing:-.025em;color:#FFFEFA}
+.dash-kicker{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#D9C69C}
+.dash-live{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:#E5EBDD;font-size:10px;font-weight:700;white-space:nowrap}
+.dash-live i{width:6px;height:6px;border-radius:50%;background:#B6D5A9;box-shadow:0 0 0 3px rgba(182,213,169,.13)}
+.dash-grid{position:relative;z-index:1;gap:9px}
+.dash-kpi{min-height:120px;gap:6px;padding:12px 13px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,254,250,.97);color:var(--ink);text-align:left;box-shadow:0 3px 10px rgba(7,30,23,.08)}
+.dash-kpi:active{transform:scale(.975);background:#F6F1E5}
+.dk-top{display:flex;align-items:center;gap:7px;min-width:0}
+.dk-icon{width:27px;height:27px;display:grid;place-items:center;flex:none;border-radius:9px;background:#E9EFE7;color:#315B49}
+.dk-icon svg.i{width:15px;height:15px;stroke-width:2.1}
+.dk-label{font-size:11px;color:var(--ink2);font-weight:800;letter-spacing:.015em}
+.dash-kpi strong{font:700 36px/.95 var(--f-num);letter-spacing:.01em;color:var(--ink)}
+.dash-kpi small{font-size:11px;line-height:1.25;color:#718078}
+.dash-kpi.alert strong{color:var(--gap)}
+.dash-kpi.good strong{color:var(--ok)}
+.dash-actions{position:relative;z-index:1;gap:9px;margin-top:13px}
+.dash-actions .btn{min-height:46px;border-radius:14px;font-size:13px}
+.dash-primary{flex:1.2!important;background:#EACB8E;border-color:#EACB8E;color:#203D32;box-shadow:0 5px 12px rgba(7,30,23,.12)}
+.dash-primary svg.i{width:17px;height:17px}
+.dash-secondary{flex:1!important;justify-content:space-between;background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:#fff}
+.dash-secondary svg.i{width:15px;height:15px}
+/* Notices, promos and search */
+.notice{gap:11px;padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:0 3px 12px rgba(25,59,50,.035)}
+.notice.warn{background:var(--warn-bg);border-color:#EAD7AC;color:#67451C}
+.strip{gap:12px;padding:13px 15px;border-radius:17px;background:#F1DDAF;color:var(--ink);box-shadow:0 4px 12px rgba(25,59,50,.045)}
+.strip .ico{width:42px;height:42px;background:var(--ink);color:#F1DDAF;border-radius:14px}
+.strip.empty{background:rgba(255,254,250,.55);border:1px dashed var(--line-strong);box-shadow:none}
+.search{margin:5px 0 9px}
+.search input{height:54px;padding-left:48px;border:1px solid var(--line);border-radius:17px;background:var(--surface);font-size:15px;box-shadow:0 4px 14px rgba(25,59,50,.04)}
+.search input:focus{outline:3px solid rgba(46,113,96,.16);border-color:#6C9A84}
+.search svg{left:16px;color:#718078}
+.group{margin:27px 0 12px;gap:9px}
+.group h2{font:700 25px/1 var(--f-num);letter-spacing:.015em;color:var(--ink)}
+.group .n{display:grid;place-items:center;min-width:24px;height:22px;padding:0 7px;border-radius:99px;background:#E6EAE1;color:#53685C;font-size:11px}
+/* Client cards and profile */
+.client{gap:10px 12px;padding:14px;margin-bottom:10px;border:1px solid rgba(25,59,50,.075);border-radius:19px;background:var(--surface);box-shadow:0 4px 14px rgba(25,59,50,.045)}
+.client:active{background:#FDFBF5;border-color:rgba(25,59,50,.2);transform:scale(.992)}
+.client-name{font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--ink)}
+.client-sub{margin-top:4px;font-size:13px;color:#738078}
+.when{min-width:48px;padding:8px 5px;border-radius:13px;background:#F2F0E8}
+.when b{font-size:27px;color:var(--ink)}
+.when small{font-size:10px;color:#76857C}
+.count{min-width:69px;padding:7px 8px;border:1px solid #E3B4A6;border-radius:13px;background:#FBF0EB;color:#B3543C}
+.count b{height:30px;font-size:30px}
+.count small{font-size:10px}
+.count.done{border-color:#C5DCCB;background:#E8F1E8;color:#397A5A}
+.count.none{border-color:var(--line);background:#F4F3ED;color:#84928A}
+.pills{gap:6px}
+.pill{min-height:27px;padding:0 9px;border:1px solid var(--line);border-radius:999px;background:#F7F6F0;color:#64746B;font-size:11px}
+.pill.yes{background:#E5F0E6;color:#397A5A}
+.pill.stale{border-color:#E8D4A8;background:#F8EED8;color:#80521F}
+.empty{padding:22px 18px;border:1px dashed var(--line-strong);border-radius:20px;background:rgba(255,254,250,.68)}
+.name{font-size:39px;color:var(--ink)}
+.meta{font-size:14px;color:#68786F}
+.rdv{padding:8px 13px;border:1px solid #E9D9B8;border-radius:999px;background:#F7EEDB;color:#654E2D;font-size:13px}
+.notes{border-left-color:#C8A76C;color:#68786F}
+.anchors{margin:18px -18px 0;padding:10px 18px;background:rgba(244,242,235,.94);border-bottom:1px solid var(--line)}
+.anc{min-height:65px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.anc .v{font-size:28px;color:var(--ink)}
+.sec{margin-top:29px}
+.sec-head{margin-bottom:13px}
+.sec-head h2{font-size:29px;color:var(--ink)}
+.ref,.vrow,.person,.task,.prow{border-color:rgba(25,59,50,.09);border-radius:17px;background:var(--surface);box-shadow:0 3px 12px rgba(25,59,50,.035)}
+.ref{padding:13px 14px 16px}
+.ref-name{font-size:16px}
+.vrow{padding-top:13px;padding-bottom:13px}
+.vrow::before{width:4px}
+.person{padding:9px 13px 9px 10px}
+.person .av{width:38px;height:38px;background:#315B49;border-color:#315B49}
+.person .av.magasin{background:#F0EBDD;color:#315B49;border-color:#E4DDCB}
+.task{border-radius:15px}
+.ticket{border-radius:18px}
+.ticket .body{background:#F1DDAF}
+.ticket.cen .body{background:#E0E8DE}
+/* Buttons and controls */
+.btn{min-height:48px;padding:0 17px;border:1px solid var(--line-strong);border-radius:15px;background:var(--surface);color:var(--ink);font-size:14px;font-weight:800;box-shadow:0 3px 9px rgba(25,59,50,.035)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 6px 14px rgba(25,59,50,.15)}
+.btn.danger{border-color:#D89B8A;color:#B3543C;background:#FFF9F6}
+.btn.danger.armed{background:var(--gap);color:#fff}
+.btn.small{min-height:40px;padding:0 13px;border-radius:13px;font-size:13px}
+.btn.ghost{background:rgba(255,254,250,.7);border-color:var(--line)}
+.icon-btn{border-radius:15px;background:var(--surface);border:1px solid var(--line)}
+.fab-wrap{bottom:calc(var(--nav-h) + var(--safe-b) + 24px);width:min(600px,100%);padding:0 18px}
+.fab{height:52px;padding:0 18px;border-radius:17px;background:#D9B66F;color:#213D32;font-size:14px;box-shadow:0 9px 22px rgba(25,59,50,.2)}
+/* Sheets, forms and selectors */
+.sheet-wrap{align-items:flex-end}
+.scrim{background:rgba(17,38,31,.48);backdrop-filter:blur(5px)}
+.sheet{border-radius:27px 27px 0 0;background:#FFFEFA;box-shadow:0 -12px 42px rgba(18,42,34,.16)}
+.sheet-head{padding:18px 10px 7px 21px}
+.sheet-head h2{font-size:30px;color:var(--ink)}
+.sheet-body{padding:12px 20px 24px}
+.sheet-foot{border-top:1px solid var(--line);background:#FFFEFA}
+.form{gap:17px}
+.field>span,.field>label{font-size:12px;letter-spacing:.035em;text-transform:uppercase;color:#65766C}
+.field input,.field select,.field textarea{min-height:51px;border:1px solid var(--line-strong);border-radius:14px;background:#fffefa;font-size:15px}
+.field textarea{padding:13px 14px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(46,113,96,.14);border-color:#6C9A84}
+.sel select{border:1px solid var(--line);border-radius:13px;background-color:var(--surface)}
+/* Bottom navigation: floating dock */
+.nav{left:50%;bottom:calc(10px + var(--safe-b));transform:translateX(-50%);width:min(540px,calc(100% - 24px));height:var(--nav-h);padding:5px 7px;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid rgba(25,59,50,.09);border-radius:23px;background:rgba(255,254,250,.96);box-shadow:0 12px 34px rgba(25,59,50,.17);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.nav button{gap:4px;border-radius:16px;color:#819087;font-size:10px;font-weight:800;letter-spacing:.01em}
+.nav button svg.i{width:20px;height:20px;stroke-width:1.9}
+.nav button[aria-current="page"]{background:#E8EEE6;color:#214C3D}
+.nav button[aria-current="page"]::before{display:none}
+.nav .bdg{top:3px;left:calc(50% + 5px);box-shadow:0 0 0 2px #FFFEFA}
+/* Smaller screens and accessibility */
+@media(max-width:380px){
+  .app{padding-left:14px;padding-right:14px}
+  .dash{padding:15px;border-radius:23px}
+  .dash-kpi{min-height:112px;padding:10px}
+  .dk-label{font-size:10px}
+  .dash-kpi strong{font-size:33px}
+  .dash-actions .btn{font-size:11px;padding:0 9px}
+  .brand-symbol{width:48px;height:48px;border-radius:16px}
+  .title{font-size:38px}
+}
+@media(min-width:600px){.app{padding-left:22px;padding-right:22px}.anchors{margin-left:-22px;margin-right:-22px;padding-left:22px;padding-right:22px}}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -807,7 +978,7 @@ const icon = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" focus
    Si le navigateur refuse d'enregistrer, l'appli continue en mémoire
    et prévient clairement. */
 const KEY = 'tournee.v1';
-const APP_VERSION = '2.9';   /* affichée dans Réglages : permet de vérifier qu'une mise à jour est bien arrivée */
+const APP_VERSION = '2.10';   /* affichée dans Réglages : permet de vérifier qu'une mise à jour est bien arrivée */
 function versionLine() {
   const standalone = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone);
   const where = standalone ? 'appli installée' : /^(file|content):$/.test(location.protocol) ? 'ouverte depuis un fichier' : 'ouverte dans le navigateur';
@@ -1073,14 +1244,14 @@ function homeDashboard() {
   const total = state.clients.filter((c) => !c.demo).length;
   const urgent = n.late + n.now;
   return `<section class="dash" aria-label="Vue d'ensemble">
-    <div class="dash-head"><b>Vue d'ensemble</b><span>En un coup d'œil</span></div>
+    <div class="dash-head"><div><span class="dash-kicker">Votre journée</span><b>Le bon cap, au bon moment</b></div><span class="dash-live"><i></i> À jour</span></div>
     <div class="dash-grid">
-      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-label">Parc clients</span><strong>${total}</strong><small>magasins enregistrés</small></button>
-      <button class="dash-kpi${overdueVisits ? ' alert' : ' good'}" type="button" data-act="go-suivi"><span class="dk-label">Suivi des visites</span><strong>${overdueVisits}</strong><small>${overdueVisits ? 'magasins en retard' : 'aucun retard détecté'}</small></button>
-      <button class="dash-kpi${urgent ? ' alert' : ' good'}" type="button" data-act="go-afaire"><span class="dk-label">À traiter</span><strong>${urgent}</strong><small>${n.late} en retard · ${n.now} aujourd'hui</small></button>
-      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-label">Rendez-vous</span><strong>${rdvToday + rdvWeek}</strong><small>${rdvToday} aujourd'hui · ${rdvWeek} sous 7 jours</small></button>
+      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-top"><span class="dk-icon">${icon('store')}</span><span class="dk-label">Parc clients</span></span><strong>${total}</strong><small>magasins suivis</small></button>
+      <button class="dash-kpi${overdueVisits ? ' alert' : ' good'}" type="button" data-act="go-suivi"><span class="dk-top"><span class="dk-icon">${icon('history')}</span><span class="dk-label">Visites à revoir</span></span><strong>${overdueVisits}</strong><small>${overdueVisits ? 'magasins en retard' : 'tout est à jour'}</small></button>
+      <button class="dash-kpi${urgent ? ' alert' : ' good'}" type="button" data-act="go-afaire"><span class="dk-top"><span class="dk-icon">${icon('todo')}</span><span class="dk-label">À traiter</span></span><strong>${urgent}</strong><small>${n.late} en retard · ${n.now} aujourd'hui</small></button>
+      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-top"><span class="dk-icon">${icon('cal')}</span><span class="dk-label">Rendez-vous</span></span><strong>${rdvToday + rdvWeek}</strong><small>${rdvToday} aujourd'hui · ${rdvWeek} sous 7 jours</small></button>
     </div>
-    <div class="dash-actions"><button class="btn small" type="button" data-act="go-map">Préparer ma tournée</button><button class="btn small" type="button" data-act="go-afaire">Voir mes tâches</button></div>
+    <div class="dash-actions"><button class="btn dash-primary" type="button" data-act="go-map">${icon('route')}Préparer ma tournée</button><button class="btn dash-secondary" type="button" data-act="go-afaire">Mes tâches ${icon('chev')}</button></div>
   </section>`;
 }
 
@@ -1088,9 +1259,9 @@ function viewHome() {
   const search = state.clients.length
     ? `<div class="search">${icon('search')}<input id="q" type="search" placeholder="Chercher magasin, ville, contact, produit…" autocomplete="off" enterkeyhint="search" aria-label="Chercher dans les magasins, villes, contacts, produits et notes"></div>`
     : '';
-  return `<header class="top">
-    <div><p class="date">${esc(fmtLong.format(new Date()))}</p><h1 class="title">Tournée</h1></div>
-    <button class="btn small ghost" data-act="open-settings">${icon('sliders')}Réglages</button>
+  return `<header class="top top-home">
+    <div class="home-brand"><div class="brand-symbol">${icon('route')}</div><div><p class="date">${esc(fmtLong.format(new Date()))}</p><h1 class="title">Tournée</h1><p class="home-sub">Votre activité, en un regard.</p></div></div>
+    <button class="settings-trigger" aria-label="Ouvrir les réglages" data-act="open-settings">${icon('sliders')}</button>
   </header>
   ${notices()}${todoStrip()}${natStrip()}${homeDashboard()}${search}
   <div id="clientList">${clientListHTML('')}</div>`;
