@@ -74,6 +74,24 @@ body.no-nav .app{padding-bottom:calc(var(--safe-b) + 48px)}
 .date::first-letter{text-transform:uppercase}
 .title{font:700 46px/.92 var(--f-num);letter-spacing:.005em}
 
+/* ───── V2.9 : cockpit de pilotage ───── */
+.dash{margin:14px 0 18px;padding:15px;border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:0 5px 18px rgba(27,43,56,.055)}
+.dash-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.dash-head b{font-size:17px;letter-spacing:-.02em}
+.dash-head span{font-size:12px;color:var(--ink3);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.dash-kpi{display:flex;flex-direction:column;gap:3px;min-height:92px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#F4F7F8}
+.dash-kpi:active{transform:scale(.985)}
+.dash-kpi .dk-label{font-size:12px;color:var(--ink2);font-weight:700}
+.dash-kpi strong{font:700 32px/.95 var(--f-num);letter-spacing:.01em}
+.dash-kpi small{font-size:11px;color:var(--ink3)}
+.dash-kpi.alert strong{color:var(--gap)}
+.dash-kpi.good strong{color:var(--ok)}
+.dash-actions{display:flex;gap:8px;margin-top:10px}
+.dash-actions .btn{flex:1;min-width:0;padding:0 9px;font-size:13px;min-height:42px}
+@media(max-width:360px){.dash{padding:12px}.dash-kpi{min-height:84px;padding:10px}.dash-kpi strong{font-size:28px}.dash-actions .btn{font-size:12px}}
+
+
 /* ───── boutons ───── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:14px;border:1.5px solid var(--ink);color:var(--ink);font:700 16px/1 var(--f-ui);white-space:nowrap;text-align:center}
 .btn:active{transform:translateY(1px)}
@@ -789,7 +807,7 @@ const icon = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" focus
    Si le navigateur refuse d'enregistrer, l'appli continue en mémoire
    et prévient clairement. */
 const KEY = 'tournee.v1';
-const APP_VERSION = '2.8';   /* affichée dans Réglages : permet de vérifier qu'une mise à jour est bien arrivée */
+const APP_VERSION = '2.9';   /* affichée dans Réglages : permet de vérifier qu'une mise à jour est bien arrivée */
 function versionLine() {
   const standalone = !!((window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone);
   const where = standalone ? 'appli installée' : /^(file|content):$/.test(location.protocol) ? 'ouverte depuis un fichier' : 'ouverte dans le navigateur';
@@ -1046,15 +1064,35 @@ function natStrip() {
   return `<button class="strip" data-act="go-promos"><span class="ico">${icon('tag')}</span><span class="txt"><b>Promo nationale en cours</b><span class="sub">${esc(sub)}</span></span>${icon('chev')}</button>`;
 }
 
+function homeDashboard() {
+  const n = todoCounts();
+  const overdueVisits = state.clients.filter((c) => ['bad', 'late'].includes(visitStatus(c).kind)).length;
+  const t = today(), week = addDays(t, 7);
+  const rdvToday = state.clients.filter((c) => c.rdvDate === t).length;
+  const rdvWeek = state.clients.filter((c) => c.rdvDate > t && c.rdvDate <= week).length;
+  const total = state.clients.filter((c) => !c.demo).length;
+  const urgent = n.late + n.now;
+  return `<section class="dash" aria-label="Vue d'ensemble">
+    <div class="dash-head"><b>Vue d'ensemble</b><span>En un coup d'œil</span></div>
+    <div class="dash-grid">
+      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-label">Parc clients</span><strong>${total}</strong><small>magasins enregistrés</small></button>
+      <button class="dash-kpi${overdueVisits ? ' alert' : ' good'}" type="button" data-act="go-suivi"><span class="dk-label">Suivi des visites</span><strong>${overdueVisits}</strong><small>${overdueVisits ? 'magasins en retard' : 'aucun retard détecté'}</small></button>
+      <button class="dash-kpi${urgent ? ' alert' : ' good'}" type="button" data-act="go-afaire"><span class="dk-label">À traiter</span><strong>${urgent}</strong><small>${n.late} en retard · ${n.now} aujourd'hui</small></button>
+      <button class="dash-kpi" type="button" data-act="go-home"><span class="dk-label">Rendez-vous</span><strong>${rdvToday + rdvWeek}</strong><small>${rdvToday} aujourd'hui · ${rdvWeek} sous 7 jours</small></button>
+    </div>
+    <div class="dash-actions"><button class="btn small" type="button" data-act="go-map">Préparer ma tournée</button><button class="btn small" type="button" data-act="go-afaire">Voir mes tâches</button></div>
+  </section>`;
+}
+
 function viewHome() {
   const search = state.clients.length
-    ? `<div class="search">${icon('search')}<input id="q" type="search" placeholder="Chercher un magasin" autocomplete="off" enterkeyhint="search" aria-label="Chercher un magasin"></div>`
+    ? `<div class="search">${icon('search')}<input id="q" type="search" placeholder="Chercher magasin, ville, contact, produit…" autocomplete="off" enterkeyhint="search" aria-label="Chercher dans les magasins, villes, contacts, produits et notes"></div>`
     : '';
   return `<header class="top">
     <div><p class="date">${esc(fmtLong.format(new Date()))}</p><h1 class="title">Tournée</h1></div>
     <button class="btn small ghost" data-act="open-settings">${icon('sliders')}Réglages</button>
   </header>
-  ${notices()}${todoStrip()}${natStrip()}${search}
+  ${notices()}${todoStrip()}${natStrip()}${homeDashboard()}${search}
   <div id="clientList">${clientListHTML('')}</div>`;
 }
 
@@ -1073,7 +1111,7 @@ function clientListHTML(q) {
     : '');
   if (!state.clients.length) return emptyHome();
   if (fq) {
-    const found = state.clients.filter((c) => fold([c.name, c.city, c.num, c.zip, cenName(c), contactNames(c)].join(' ')).includes(fq)).sort(byName);
+    const found = state.clients.filter((c) => fold([c.name, c.city, c.num, c.zip, c.street, c.phone, c.cls, cenName(c), contactNames(c), c.notes, c.goal, c.vnotes, ...(c.items || []).map((i) => i.name), ...(c.tasks || []).map((t) => t.label)].join(' ')).includes(fq)).sort(byName);
     return found.length ? section('Résultats', found) : `<div class="group"></div>${emptyBox(`Aucun magasin ne correspond à « ${esc(q.trim())} ».`)}`;
   }
   const byTime = (a, b) => (a.rdvTime || '99:99').localeCompare(b.rdvTime || '99:99') || byName(a, b);
@@ -1712,6 +1750,52 @@ async function exportBackup() {
   return r;
 }
 
+/* ───── V2.9 : sauvegarde chiffrée côté appareil (AES-256-GCM + PBKDF2) ─────
+   Le chiffrement protège le fichier exporté. Le stockage courant du navigateur reste distinct. */
+const BACKUP_ITERATIONS = 310000;
+const b64Encode = (bytes) => {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+};
+const b64Decode = (value) => Uint8Array.from(atob(value), (c) => c.charCodeAt(0));
+async function backupCryptoKey(passphrase, salt, usage) {
+  const material = await crypto.subtle.importKey('raw', new TextEncoder().encode(passphrase), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: BACKUP_ITERATIONS, hash: 'SHA-256' }, material, { name: 'AES-GCM', length: 256 }, false, [usage]);
+}
+async function exportEncryptedBackup() {
+  if (!window.crypto || !crypto.subtle || !window.isSecureContext) throw new Error('Le chiffrement nécessite une origine sécurisée (HTTPS).');
+  const pass = window.prompt('Choisis une phrase secrète (12 caractères minimum). Elle sera nécessaire pour restaurer cette sauvegarde :');
+  if (pass === null) return 'cancelled';
+  if (pass.length < 12) throw new Error('La phrase secrète doit contenir au moins 12 caractères.');
+  const confirm = window.prompt('Confirme ta phrase secrète :');
+  if (confirm === null) return 'cancelled';
+  if (pass !== confirm) throw new Error('Les deux phrases secrètes ne correspondent pas.');
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const prev = state.lastBackup;
+  state.lastBackup = Date.now();
+  try {
+    const key = await backupCryptoKey(pass, salt, 'encrypt');
+    const payload = new TextEncoder().encode(JSON.stringify({ app: 'tournee', exportedAt: new Date().toISOString(), ...state }));
+    const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, payload);
+    const envelope = { app: 'tournee-encrypted', format: 1, cipher: 'AES-256-GCM', kdf: 'PBKDF2-SHA-256', iterations: BACKUP_ITERATIONS, salt: b64Encode(salt), iv: b64Encode(iv), data: b64Encode(new Uint8Array(cipher)) };
+    const result = await saveFile(`tournee-coffre-${today()}.json`, JSON.stringify(envelope), 'application/json');
+    if (result === 'cancelled') { state.lastBackup = prev; return result; }
+    save(false);
+    return result;
+  } catch (e) { state.lastBackup = prev; throw e; }
+}
+async function decryptBackupEnvelope(envelope) {
+  if (!window.crypto || !crypto.subtle || !window.isSecureContext) throw new Error('Le déchiffrement nécessite une origine sécurisée (HTTPS).');
+  if (!envelope || envelope.app !== 'tournee-encrypted' || envelope.format !== 1 || envelope.cipher !== 'AES-256-GCM' || envelope.kdf !== 'PBKDF2-SHA-256') throw new Error('Format de sauvegarde chiffrée non reconnu.');
+  if (envelope.iterations !== BACKUP_ITERATIONS) throw new Error('Paramètres de chiffrement non pris en charge.');
+  const pass = window.prompt('Saisis la phrase secrète de cette sauvegarde chiffrée :');
+  if (pass === null) return null;
+  const key = await backupCryptoKey(pass, b64Decode(envelope.salt), 'decrypt');
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64Decode(envelope.iv) }, key, b64Decode(envelope.data));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
 function openSettingsSheet() {
   const real = state.clients.filter((c) => !c.demo).length;
   const backupLine = state.lastBackup ? `Dernière sauvegarde : ${backupAgo(state.lastBackup)}.` : "Aucune sauvegarde pour l'instant.";
@@ -1754,6 +1838,10 @@ function openSettingsSheet() {
           <button type="button" class="btn" id="sExport">${icon('down')}Sauvegarder</button>
           <button type="button" class="btn" id="sImportBtn">${icon('up')}Restaurer</button>
         </div>
+        <div class="row2" style="flex-wrap:wrap;margin-top:8px">
+          <button type="button" class="btn primary" id="sExportCrypt">Créer un coffre chiffré</button>
+        </div>
+        <p class="hint">Le coffre exporté est chiffré en AES-256-GCM. Conserve ta phrase secrète : elle ne peut pas être récupérée. Attention : cette option chiffre le fichier de sauvegarde, pas les données actuellement stockées dans le navigateur.</p>
         <input id="sFile" type="file" accept="application/json,.json" class="sr" tabindex="-1" aria-label="Choisir un fichier de sauvegarde">
         <div id="sConfirm" class="notice hidden" style="flex-direction:column;align-items:stretch;margin:0"></div>
         <p class="msg" id="sMsg" role="status"></p>
@@ -1782,6 +1870,16 @@ function openSettingsSheet() {
       msg(r === 'shared' ? 'Sauvegarde créée.' : 'Fichier enregistré dans les téléchargements du téléphone.');
     } catch (e) { msg("La sauvegarde n'a pas pu être créée.", true); }
   });
+  $$('#sExportCrypt').addEventListener('click', async () => {
+    const b = $$('#sExportCrypt'); b.disabled = true;
+    try {
+      const r = await exportEncryptedBackup();
+      if (r === 'cancelled') { msg('Création du coffre annulée.'); return; }
+      $$('#sBk').textContent = 'Dernière sauvegarde : aujourd’hui.';
+      msg(r === 'shared' ? 'Coffre chiffré créé.' : 'Coffre chiffré enregistré dans les téléchargements.');
+    } catch (e) { msg(e && e.message ? e.message : "Le coffre chiffré n'a pas pu être créé.", true); }
+    finally { b.disabled = false; }
+  });
   $$('#sImportBtn').addEventListener('click', () => $$('#sFile').click());
   $$('#sFile').addEventListener('change', async (e) => {
     const f = e.target.files && e.target.files[0];
@@ -1789,6 +1887,11 @@ function openSettingsSheet() {
     if (!f) return;
     let data;
     try { data = JSON.parse(await f.text()); } catch (err) { data = null; }
+    if (data && data.app === 'tournee-encrypted') {
+      try { data = await decryptBackupEnvelope(data); }
+      catch (err) { msg('Déchiffrement impossible : phrase secrète incorrecte ou fichier altéré.', true); return; }
+      if (data === null) { msg('Restauration annulée.'); return; }
+    }
     if (!data || !Array.isArray(data.clients) || !Array.isArray(data.promos)) { msg("Ce fichier n'est pas une sauvegarde de Tournée.", true); return; }
     const next = sanitize(data);
     const box = $$('#sConfirm');
